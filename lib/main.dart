@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 const boxName = "NoteKeeperAppDB";
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized()
   final doc = await getApplicationDocumentsDirectory();
   Hive.init(doc.path);
   Hive.registerAdapter(NoteAdapter());
@@ -27,9 +28,7 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
           color: Colors.white,
           elevation: 0.0,
-          iconTheme: Theme.of(context).iconTheme,
-          textTheme: Theme.of(context).textTheme,
-          actionsIconTheme: Theme.of(context).iconTheme,
+         
         ),
       ),
       home: NoteListScreen(),
