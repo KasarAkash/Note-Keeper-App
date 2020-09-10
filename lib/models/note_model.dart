@@ -7,12 +7,16 @@ part 'note_model.g.dart';
 class Note {
   @HiveField(1)
   final String title;
+
   @HiveField(2)
   final String description;
+
   @HiveField(3)
   final String date;
+
   @HiveField(4)
   final String priority;
+
   @HiveField(5)
   final Color color;
 
