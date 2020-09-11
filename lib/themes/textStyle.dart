@@ -14,7 +14,7 @@ class MyTextTheme {
   );
   static const TextStyle noteSubTitle = TextStyle(
     fontWeight: FontWeight.w500,
-    fontSize: 16.0,
+    fontSize: 18.0,
     color: Colors.black,
   );
   static const TextStyle noteDateTitle = TextStyle(
@@ -30,6 +30,6 @@ class MyTextTheme {
   static const TextStyle buttonTitle = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 18.0,
-    color: Colors.black,
+    color: Colors.white,
   );
 }

@@ -8,9 +8,16 @@ import 'package:intl/intl.dart';
 import '../main.dart';
 
 class NoteDetailScreen extends StatefulWidget {
-  final String title;
+  final String appTitle;
+  Note note;
 
-  const NoteDetailScreen({Key key, this.title}) : super(key: key);
+  final int id;
+  NoteDetailScreen({
+    Key key,
+    this.appTitle,
+    this.note,
+    this.id,
+  }) : super(key: key);
   @override
   _NoteDetailScreenState createState() => _NoteDetailScreenState();
 }
@@ -19,7 +26,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
   String priority = "Low";
   TextEditingController titleText = TextEditingController();
   TextEditingController descriptionText = TextEditingController();
-  int selectedIndex;
+  int selectedIndex = 0;
 
   Box<Note> box;
 
@@ -31,6 +38,11 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.id != null) {
+      widget.note = box.get(widget.id);
+      titleText.text = widget.note.title;
+      descriptionText.text = widget.note.description;
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -43,7 +55,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
           },
         ),
         title: Text(
-          widget.title ?? "NoteDetail",
+          widget.appTitle ?? "NoteDetail",
           style: MyTextTheme.appTitle,
         ),
       ),
@@ -51,6 +63,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: ListView(
           children: <Widget>[
+            SizedBox(height: 10),
             Tooltip(
               message: "Set Priority of Note",
               child: ListTile(
@@ -59,13 +72,10 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                   items: ["High", "Medium", "Low"].map((String item) {
                     return DropdownMenuItem<String>(
                       value: item,
-                      child: Text(
-                        item,
-                        style: MyTextTheme.dropDownTitle,
-                      ),
+                      child: Text(item, style: MyTextTheme.dropDownTitle),
                     );
                   }).toList(),
-                  onChanged: (value) {
+                  onChanged: (String value) {
                     setState(() {
                       priority = value;
                     });
@@ -74,7 +84,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 18),
             Row(
               children: <Widget>[
                 CircleDot(
@@ -121,7 +131,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 18),
             TextField(
               controller: titleText,
               decoration: InputDecoration(
@@ -131,7 +141,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 12),
             TextField(
               controller: descriptionText,
               maxLines: 7,
@@ -142,37 +152,59 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
-            RaisedButton(
-              child: Text(
-                "SAVE",
-                style: MyTextTheme.buttonTitle,
-              ),
-              color: Colors.greenAccent,
-              elevation: 0,
-              onPressed: () {
-                setState(() {
-                  Note value = Note(
-                    title: titleText.text,
-                    description: descriptionText.text,
-                    priority: priority,
-                    color: selectColor(selectedIndex),
-                    date: DateFormat.yMMMd().format(DateTime.now()),
-                  );
-                  box.add(value);
-                });
-              },
-            ),
-            RaisedButton(
-              child: Text(
-                "REMOVE",
-                style: MyTextTheme.buttonTitle,
-              ),
-              color: Colors.greenAccent,
-              elevation: 0,
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            SizedBox(height: 40),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: RaisedButton(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        "SAVE",
+                        style: MyTextTheme.buttonTitle,
+                      ),
+                    ),
+                    color: Colors.blue,
+                    elevation: 0,
+                    onPressed: () {
+                      Note value = Note(
+                        title: titleText.text,
+                        description: descriptionText.text,
+                        priority: priority,
+                        color: selectedIndex,
+                        date: DateFormat.yMMMd().format(DateTime.now()),
+                      );
+
+                      if (widget.id == null) {
+                        box.add(value);
+                      } else {
+                        box.put(widget.id, value);
+                      }
+
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                SizedBox(width: 8),
+                Expanded(
+                  flex: 1,
+                  child: RaisedButton(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        "REMOVE",
+                        style: MyTextTheme.buttonTitle,
+                      ),
+                    ),
+                    color: Colors.blue,
+                    elevation: 0,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -184,47 +216,5 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     setState(() {
       selectedIndex = index;
     });
-  }
-
-  Color selectColor(int index) {
-    switch (index) {
-      case 0:
-        Colors.lightBlueAccent;
-        break;
-      case 1:
-        Colors.tealAccent;
-        break;
-      case 2:
-        Colors.lime;
-        break;
-      case 3:
-        Colors.cyanAccent;
-        break;
-      case 4:
-        Colors.deepOrangeAccent;
-        break;
-      case 5:
-        Colors.indigoAccent;
-        break;
-
-      default:
-        Colors.transparent;
-    }
-  }
-
-  Color selectPriority(String s) {
-    switch (s) {
-      case "High":
-        Colors.redAccent;
-        break;
-      case "High":
-        Colors.deepOrange;
-        break;
-      case "High":
-        Colors.amber;
-        break;
-      default:
-        Colors.amber;
-    }
   }
 }

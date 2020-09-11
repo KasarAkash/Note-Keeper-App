@@ -21,7 +21,7 @@ class NoteAdapter extends TypeAdapter<Note> {
       description: fields[2] as String,
       date: fields[3] as String,
       priority: fields[4] as String,
-      color: fields[5] as Color,
+      color: fields[5] as int,
     );
   }
 

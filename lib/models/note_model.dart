@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'note_model.g.dart';
@@ -18,7 +17,7 @@ class Note {
   final String priority;
 
   @HiveField(5)
-  final Color color;
+  final int color;
 
   Note({
     this.title,

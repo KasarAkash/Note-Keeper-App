@@ -13,8 +13,6 @@ class NoteListScreen extends StatefulWidget {
 }
 
 class _NoteListScreenState extends State<NoteListScreen> {
-  Note note;
-
   Box<Note> box;
 
   @override
@@ -40,9 +38,24 @@ class _NoteListScreenState extends State<NoteListScreen> {
             itemCount: keys.length,
             itemBuilder: (context, index) {
               int key = keys[index];
-              note = value.get(key);
-              return NoteTile(
-                note: note,
+              Note note = value.get(key);
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (BuildContext context) {
+                      return NoteDetailScreen(
+                        note: note,
+                        appTitle: "Edit Note",
+                        id: key,
+                      );
+                    }),
+                  );
+                },
+                child: NoteTile(
+                  note: note,
+                  id: key,
+                ),
               );
             },
           );
@@ -51,10 +64,9 @@ class _NoteListScreenState extends State<NoteListScreen> {
       floatingActionButton: FloatingActionButton(
         elevation: 18.0,
         tooltip: "Add New Note",
-        backgroundColor: Colors.greenAccent,
         child: Icon(
           Icons.create,
-          color: Colors.black,
+          color: Colors.white,
           size: 28.0,
         ),
         onPressed: () {
@@ -63,7 +75,8 @@ class _NoteListScreenState extends State<NoteListScreen> {
             MaterialPageRoute(
               builder: (BuildContext context) {
                 return NoteDetailScreen(
-                  title: "Create New Note",
+                  appTitle: "Create New Note",
+                  note: Note(),
                 );
               },
             ),
