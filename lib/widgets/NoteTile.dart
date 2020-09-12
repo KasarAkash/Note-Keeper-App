@@ -31,10 +31,10 @@ class _NoteTileState extends State<NoteTile> {
       margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(6),
-          topLeft: Radius.circular(6),
-          topRight: Radius.circular(20),
+          bottomLeft: Radius.circular(22),
+          bottomRight: Radius.circular(4),
+          topLeft: Radius.circular(4),
+          topRight: Radius.circular(22),
         ),
       ),
       child: Padding(
@@ -112,19 +112,25 @@ class _NoteTileState extends State<NoteTile> {
         return Colors.lightBlueAccent;
         break;
       case 1:
-        return Colors.tealAccent;
+        return Colors.greenAccent;
         break;
       case 2:
-        return Colors.lime;
+        return Colors.amberAccent;
         break;
       case 3:
-        return Colors.cyanAccent;
+        return Colors.lime;
         break;
       case 4:
-        return Colors.deepOrangeAccent;
+        return Colors.cyanAccent;
         break;
       case 5:
-        return Colors.indigoAccent;
+        return Colors.deepOrangeAccent[200];
+        break;
+      case 6:
+        return Colors.pinkAccent;
+        break;
+      case 7:
+        return Colors.purpleAccent;
         break;
 
       default:
@@ -138,7 +144,7 @@ class _NoteTileState extends State<NoteTile> {
         return Colors.red;
         break;
       case "Medium":
-        return Colors.orange;
+        return Colors.deepOrange[400];
         break;
       case "Low":
         return Colors.amber;

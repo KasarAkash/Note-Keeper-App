@@ -24,24 +24,31 @@ class NoteDetailScreen extends StatefulWidget {
 
 class _NoteDetailScreenState extends State<NoteDetailScreen> {
   String priority = "Low";
-  TextEditingController titleText = TextEditingController();
-  TextEditingController descriptionText = TextEditingController();
+
+  TextEditingController titleText;
+  TextEditingController descriptionText;
+
   int selectedIndex = 0;
 
   Box<Note> box;
 
   @override
   void initState() {
-    box = Hive.box<Note>(boxName);
     super.initState();
+
+    box = Hive.box<Note>(boxName);
+    titleText = TextEditingController(text: widget.note.title ?? "");
+    descriptionText =
+        TextEditingController(text: widget.note.description ?? "");
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.id != null) {
       widget.note = box.get(widget.id);
-      titleText.text = widget.note.title;
-      descriptionText.text = widget.note.description;
+
+      priority = widget.note.priority;
+      selectedIndex = widget.note.color;
     }
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +84,11 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                   }).toList(),
                   onChanged: (String value) {
                     setState(() {
-                      priority = value;
+                      if (widget.note.priority == null) {
+                        priority = value;
+                      } else {
+                        widget.note.priority = value;
+                      }
                     });
                   },
                   value: priority,
@@ -85,51 +96,70 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
               ),
             ),
             SizedBox(height: 18),
-            Row(
-              children: <Widget>[
-                CircleDot(
-                  color: Colors.lightBlueAccent,
-                  isSelected: selectedIndex == 0,
-                  onTap: () {
-                    onTapFunc(0);
-                  },
-                ),
-                CircleDot(
-                  color: Colors.tealAccent,
-                  isSelected: selectedIndex == 1,
-                  onTap: () {
-                    onTapFunc(1);
-                  },
-                ),
-                CircleDot(
-                  color: Colors.lime,
-                  isSelected: selectedIndex == 2,
-                  onTap: () {
-                    onTapFunc(2);
-                  },
-                ),
-                CircleDot(
-                  color: Colors.cyanAccent,
-                  isSelected: selectedIndex == 3,
-                  onTap: () {
-                    onTapFunc(3);
-                  },
-                ),
-                CircleDot(
-                  color: Colors.deepOrangeAccent,
-                  isSelected: selectedIndex == 4,
-                  onTap: () {
-                    onTapFunc(4);
-                  },
-                ),
-                CircleDot(
-                  color: Colors.indigoAccent,
-                  isSelected: selectedIndex == 5,
-                  onTap: () {
-                    onTapFunc(5);
-                  },
-                ),
-              ],
+            SizedBox(
+              height: 50,
+              child: ListView(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  CircleDot(
+                    color: Colors.lightBlueAccent,
+                    isSelected: selectedIndex == 0,
+                    onTap: () {
+                      onTapFunc(0);
+                    },
+                  ),
+                  CircleDot(
+                    color: Colors.greenAccent,
+                    isSelected: selectedIndex == 1,
+                    onTap: () {
+                      onTapFunc(1);
+                    },
+                  ),
+                  CircleDot(
+                    color: Colors.amberAccent,
+                    isSelected: selectedIndex == 2,
+                    onTap: () {
+                      onTapFunc(2);
+                    },
+                  ),
+                  CircleDot(
+                    color: Colors.lime,
+                    isSelected: selectedIndex == 3,
+                    onTap: () {
+                      onTapFunc(3);
+                    },
+                  ),
+                  CircleDot(
+                    color: Colors.cyanAccent,
+                    isSelected: selectedIndex == 4,
+                    onTap: () {
+                      onTapFunc(4);
+                    },
+                  ),
+                  CircleDot(
+                    color: Colors.deepOrangeAccent[200],
+                    isSelected: selectedIndex == 5,
+                    onTap: () {
+                      onTapFunc(5);
+                    },
+                  ),
+                  CircleDot(
+                    color: Colors.pinkAccent,
+                    isSelected: selectedIndex == 6,
+                    onTap: () {
+                      onTapFunc(6);
+                    },
+                  ),
+                  CircleDot(
+                    color: Colors.purpleAccent,
+                    isSelected: selectedIndex == 7,
+                    onTap: () {
+                      onTapFunc(7);
+                    },
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 18),
             TextField(
@@ -170,9 +200,13 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                     onPressed: () {
                       Note value = Note(
                         title: titleText.text,
+
                         description: descriptionText.text,
+
                         priority: priority,
+
                         color: selectedIndex,
+                        //don't touch
                         date: DateFormat.yMMMd().format(DateTime.now()),
                       );
 
@@ -215,6 +249,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
   onTapFunc(int index) {
     setState(() {
       selectedIndex = index;
+      widget.note.color = selectedIndex;
     });
   }
 }

@@ -5,19 +5,19 @@ part 'note_model.g.dart';
 @HiveType(typeId: 1)
 class Note {
   @HiveField(1)
-  final String title;
+  String title;
 
   @HiveField(2)
-  final String description;
+  String description;
 
   @HiveField(3)
   final String date;
 
   @HiveField(4)
-  final String priority;
+  String priority;
 
   @HiveField(5)
-  final int color;
+  int color;
 
   Note({
     this.title,
