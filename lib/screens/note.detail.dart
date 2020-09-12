@@ -9,10 +9,10 @@ import '../main.dart';
 
 class NoteDetailScreen extends StatefulWidget {
   final String appTitle;
-  Note note;
+  final Note note;
 
   final int id;
-  NoteDetailScreen({
+  const NoteDetailScreen({
     Key key,
     this.appTitle,
     this.note,
@@ -45,8 +45,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
   @override
   Widget build(BuildContext context) {
     if (widget.id != null) {
-      widget.note = box.get(widget.id);
-
       priority = widget.note.priority;
       selectedIndex = widget.note.color;
     }
@@ -55,7 +53,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context);

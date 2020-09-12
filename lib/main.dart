@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
           color: Colors.white,
           elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.black, size: 22),
         ),
       ),
       home: NoteListScreen(),

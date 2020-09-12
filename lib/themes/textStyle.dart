@@ -32,4 +32,9 @@ class MyTextTheme {
     fontSize: 18.0,
     color: Colors.white,
   );
+  static const TextStyle popButtonTitle = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 18.0,
+    color: Colors.black,
+  );
 }

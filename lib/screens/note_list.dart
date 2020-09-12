@@ -12,8 +12,11 @@ class NoteListScreen extends StatefulWidget {
   _NoteListScreenState createState() => _NoteListScreenState();
 }
 
+enum NoteFilter { All, High, Medium, Low }
+
 class _NoteListScreenState extends State<NoteListScreen> {
   Box<Note> box;
+  NoteFilter filter = NoteFilter.All;
 
   @override
   void initState() {
@@ -29,16 +32,69 @@ class _NoteListScreenState extends State<NoteListScreen> {
           "NoteKeeperApp",
           style: MyTextTheme.appTitle,
         ),
+        actions: [
+          PopupMenuButton<String>(
+            tooltip: "Filter by Priority",
+            itemBuilder: (context) {
+              return ["All", "High", "Medium", "Low"].map((option) {
+                return PopupMenuItem(
+                  child: Text(
+                    option,
+                    style: MyTextTheme.popButtonTitle,
+                  ),
+                  value: option,
+                );
+              }).toList();
+            },
+            onSelected: (value) {
+              if (value.compareTo("All") == 0) {
+                setState(() {
+                  filter = NoteFilter.All;
+                });
+              } else if (value.compareTo("High") == 0) {
+                setState(() {
+                  filter = NoteFilter.High;
+                });
+              } else if (value.compareTo("Medium") == 0) {
+                setState(() {
+                  filter = NoteFilter.Medium;
+                });
+              } else {
+                setState(() {
+                  filter = NoteFilter.Low;
+                });
+              }
+            },
+          )
+        ],
       ),
       body: ValueListenableBuilder(
         valueListenable: box.listenable(),
         builder: (BuildContext context, Box<Note> value, Widget child) {
-          List<int> keys = value.keys.cast<int>().toList();
+          List<int> keys;
+          if (filter == NoteFilter.All) {
+            keys = value.keys.cast<int>().toList();
+          } else if (filter == NoteFilter.High) {
+            keys = value.keys
+                .cast<int>()
+                .where((key) => value.get(key).priority == "High")
+                .toList();
+          } else if (filter == NoteFilter.Medium) {
+            keys = value.keys
+                .cast<int>()
+                .where((key) => value.get(key).priority == "Medium")
+                .toList();
+          } else {
+            keys = value.keys
+                .cast<int>()
+                .where((key) => value.get(key).priority == "Low")
+                .toList();
+          }
           return ListView.builder(
             itemCount: keys.length,
             itemBuilder: (context, index) {
-              int key = keys[index];
-              Note note = value.get(key);
+              final int key = keys[index];
+              final Note note = value.get(key);
               return InkWell(
                 onTap: () {
                   Navigator.push(
