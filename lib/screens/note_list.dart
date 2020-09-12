@@ -38,9 +38,12 @@ class _NoteListScreenState extends State<NoteListScreen> {
             itemBuilder: (context) {
               return ["All", "High", "Medium", "Low"].map((option) {
                 return PopupMenuItem(
-                  child: Text(
-                    option,
-                    style: MyTextTheme.popButtonTitle,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Text(
+                      option,
+                      style: MyTextTheme.popButtonTitle,
+                    ),
                   ),
                   value: option,
                 );
