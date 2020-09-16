@@ -2,6 +2,7 @@ import 'package:NoteKeeperApp/models/note_model.dart';
 import 'package:NoteKeeperApp/screens/note.detail.dart';
 import 'package:NoteKeeperApp/themes/textStyle.dart';
 import 'package:NoteKeeperApp/widgets/NoteTile.dart';
+import 'package:NoteKeeperApp/widgets/noteSearch.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,6 +34,15 @@ class _NoteListScreenState extends State<NoteListScreen> {
           style: MyTextTheme.appTitle,
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              showSearch(context: context, delegate: NoteSearch());
+            },
+          ),
           PopupMenuButton<String>(
             tooltip: "Filter by Priority",
             itemBuilder: (context) {

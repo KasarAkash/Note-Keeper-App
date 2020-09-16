@@ -40,14 +40,14 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     titleText = TextEditingController(text: widget.note.title ?? "");
     descriptionText =
         TextEditingController(text: widget.note.description ?? "");
-    if (widget.id != null) {
-      priority = widget.note.priority;
-      selectedIndex = widget.note.color;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.id != null) {
+      priority = widget.note.priority;
+      selectedIndex = widget.note.color;
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
