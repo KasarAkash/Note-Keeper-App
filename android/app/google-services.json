@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "18071619450",
+    "project_id": "note-keeper-app-6dd0e",
+    "storage_bucket": "note-keeper-app-6dd0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18071619450:android:cadbe57c865d9ae679b8c3",
+        "android_client_info": {
+          "package_name": "com.example.note_keeper_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18071619450-dgfg5t03c6eskdcq8v6crjof95v215ud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.note_keeper_app",
+            "certificate_hash": "0121a60cd9f5e55404740c4eeab8912f9fced28a"
+          }
+        },
+        {
+          "client_id": "18071619450-oalsuq26gdqld6580cjq1ufbgamsd238.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS2PB48ZmIlLolyxGFxW4tObzq-gzDNys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18071619450-oalsuq26gdqld6580cjq1ufbgamsd238.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
