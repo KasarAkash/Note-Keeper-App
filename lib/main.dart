@@ -1,8 +1,6 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:note_keeper_app/Screens/HomePage.dart';
+import 'package:note_keeper_app/Screens/Wrapper.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,22 +27,22 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _initialization,
+      future: Firebase.initializeApp(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const SizedBox();
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return const HomePage();
+          return const Wrapper();
         }
 
-        return const Center(child: CircularProgressIndicator());
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
