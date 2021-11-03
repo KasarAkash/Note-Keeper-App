@@ -1,8 +1,13 @@
 // ignore_for_file: file_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_keeper_app/Screens/NotePage.dart';
+import 'package:note_keeper_app/Widgets/NoteCard.dart';
+import 'package:note_keeper_app/model/Note.dart';
+import 'package:note_keeper_app/service/firestore.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,6 +17,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Color> noteCardColors = [
+    Colors.amber,
+    Colors.blue,
+    Colors.cyan,
+    Colors.deepOrange,
+    Colors.deepPurpleAccent,
+    Colors.greenAccent,
+    Colors.indigo,
+    Colors.lightBlue,
+    Colors.teal,
+    Colors.redAccent,
+    Colors.lime,
+    Colors.orangeAccent,
+    Colors.purple,
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           "Notes",
           style: GoogleFonts.poppins(
-            color: Colors.white70,
+            color: Colors.white,
             fontSize: 28,
             fontWeight: FontWeight.w500,
           ),
@@ -44,7 +65,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(8),
               child: const Icon(
                 Icons.search,
-                color: Colors.white70,
+                color: Colors.white,
                 size: 30,
               ),
             ),
@@ -65,7 +86,44 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(
           Icons.create,
           size: 30,
-          color: Colors.white70,
+          color: Colors.white,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FireStorage.getNotes(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading");
+            }
+
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+
+                Note note = Note(
+                  title: data['title'],
+                  description: data['description'],
+                  date: data['date'],
+                );
+
+                return NoteCard(note: note);
+              }).toList(),
+            );
+
+            // return StaggeredGridView.countBuilder(
+            //   crossAxisCount: 2,
+            //   itemBuilder: (BuildContext context, int index) {},
+            //   staggeredTileBuilder: (int index) {},
+            // );
+          },
         ),
       ),
     );

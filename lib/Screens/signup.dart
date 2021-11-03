@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_keeper_app/Screens/HomePage.dart';
 import 'package:note_keeper_app/service/auth.dart';
+import 'package:note_keeper_app/service/firestore.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -29,6 +30,7 @@ class SignUpPage extends StatelessWidget {
             InkWell(
               onTap: () async {
                 await signInWithGoogle();
+                await FireStorage.addUser();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -40,7 +42,7 @@ class SignUpPage extends StatelessWidget {
                 height: 80,
                 width: 300,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.green,
                   borderRadius: BorderRadius.circular(40),
                 ),
                 child: Row(

@@ -2,11 +2,11 @@
 
 class Note {
   late String title;
-  late String Description;
-  late DateTime date;
+  late String description;
+  late String date;
 
   Note({
-    required this.Description,
+    required this.description,
     required this.date,
     required this.title,
   });

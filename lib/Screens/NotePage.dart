@@ -1,7 +1,10 @@
-// ignore_for_file: file_names, prefer_const_literals_to_create_immutables, unused_field, avoid_print
+// ignore_for_file: file_names, prefer_const_literals_to_create_immutables, unused_field, avoid_print, unnecessary_new
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:note_keeper_app/model/Note.dart';
+import 'package:note_keeper_app/service/firestore.dart';
 
 class NotePage extends StatefulWidget {
   const NotePage({Key? key}) : super(key: key);
@@ -60,15 +63,29 @@ class _NotePageState extends State<NotePage> {
                       padding: EdgeInsets.only(left: 10),
                       child: Icon(
                         Icons.arrow_back_ios,
-                        color: Colors.white70,
+                        color: Colors.white,
                         size: 26,
                       ),
                     ),
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    //todo:
+                  onTap: () async {
+                    final now = new DateTime.now();
+                    String formatter = DateFormat.yMMMMd('en_US').format(now);
+
+                    // final now = new DateTime.now();
+                    // String formatter =
+                    //     new DateFormat.yMMMMd('en_US').toString();
+
+                    Note note = Note(
+                      title: titleController.text,
+                      description: descriptionController.text,
+                      date: formatter,
+                    );
+
+                    await FireStorage.addNote(note);
+                    Navigator.pop(context);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -81,7 +98,7 @@ class _NotePageState extends State<NotePage> {
                       child: Text(
                         "Save",
                         style: GoogleFonts.poppins(
-                          color: Colors.white70,
+                          color: Colors.white,
                           fontWeight: FontWeight.w500,
                           fontSize: 22,
                         ),
@@ -105,7 +122,7 @@ class _NotePageState extends State<NotePage> {
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   style: GoogleFonts.poppins(
-                    color: Colors.white70,
+                    color: Colors.white,
                     fontSize: 30,
                     fontWeight: FontWeight.w500,
                   ),
@@ -126,7 +143,7 @@ class _NotePageState extends State<NotePage> {
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   style: GoogleFonts.poppins(
-                    color: Colors.white70,
+                    color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
                   ),
