@@ -30,6 +30,10 @@ class FireStorage {
     });
   }
 
+  static Future<void> deleteNote(String id) async {
+    return await notes.doc(id).delete();
+  }
+
   static Stream<QuerySnapshot> getNotes() {
     final Stream<QuerySnapshot> notesStream =
         FirebaseFirestore.instance.collection('notes').snapshots();

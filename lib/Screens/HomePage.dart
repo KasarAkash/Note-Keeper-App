@@ -1,8 +1,11 @@
 // ignore_for_file: file_names
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:note_keeper_app/Screens/NoteDetail.dart';
 import 'package:note_keeper_app/Screens/NotePage.dart';
 import 'package:note_keeper_app/Widgets/NoteCard.dart';
 import 'package:note_keeper_app/model/Note.dart';
@@ -17,20 +20,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Color> noteCardColors = [
-    Colors.amber,
-    Colors.blue,
-    Colors.cyan,
-    Colors.deepOrange,
-    Colors.deepPurpleAccent,
-    Colors.greenAccent,
-    Colors.indigo,
-    Colors.lightBlue,
-    Colors.teal,
-    Colors.redAccent,
-    Colors.lime,
-    Colors.orangeAccent,
-    Colors.purple,
+  List<Color> noteCardColors = const [
+    Color(0xffCAB8FF),
+    Color(0xff79B4B7),
+    Color(0xffFFADAD),
+    Color(0xff79B4B7),
+    Color(0xffB980F0),
+    Color(0xffE5FBB8),
+    Color(0xffC1AC95),
+    Color(0xff867AE9),
+    Color(0xff08D9D6),
+    Color(0xffDDFFBC),
+    Color(0xffFF577F),
+    Color(0xffCD5D7D),
+    Color(0xff9AB3F5),
+    Color(0xffEFBBCF),
+    Color(0xff28DF99),
   ];
 
   @override
@@ -90,7 +95,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: StreamBuilder<QuerySnapshot>(
           stream: FireStorage.getNotes(),
           builder:
@@ -103,26 +108,67 @@ class _HomePageState extends State<HomePage> {
               return const Text("Loading");
             }
 
-            return ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
+            // return ListView(
+            //   children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            //     Map<String, dynamic> data =
+            //         document.data()! as Map<String, dynamic>;
 
-                Note note = Note(
-                  title: data['title'],
-                  description: data['description'],
-                  date: data['date'],
-                );
+            //     Note note = Note(
+            //       title: data['title'],
+            //       description: data['description'],
+            //       date: data['date'],
+            //     );
 
-                return NoteCard(note: note);
-              }).toList(),
-            );
-
-            // return StaggeredGridView.countBuilder(
-            //   crossAxisCount: 2,
-            //   itemBuilder: (BuildContext context, int index) {},
-            //   staggeredTileBuilder: (int index) {},
+            //     return NoteCard(note: note);
+            //   }).toList(),
             // );
+
+            Random random = Random();
+
+            List<Note> notes =
+                snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+
+              Note note = Note(
+                title: data['title'],
+                description: data['description'],
+                date: data['date'],
+              );
+
+              return note;
+            }).toList();
+
+            return StaggeredGridView.countBuilder(
+              physics: const BouncingScrollPhysics(),
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 4.0,
+              crossAxisCount: 4,
+              itemCount: notes.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    String docid = snapshot.data!.docs[index].id;
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => NoteDetail(
+                          note: notes[index],
+                          docid: docid,
+                        ),
+                      ),
+                    );
+                  },
+                  child: NoteCard(
+                    note: notes[index],
+                    color:
+                        noteCardColors[random.nextInt(noteCardColors.length)],
+                  ),
+                );
+              },
+              staggeredTileBuilder: (int index) => const StaggeredTile.fit(2),
+            );
           },
         ),
       ),

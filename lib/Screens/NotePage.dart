@@ -74,10 +74,6 @@ class _NotePageState extends State<NotePage> {
                     final now = new DateTime.now();
                     String formatter = DateFormat.yMMMMd('en_US').format(now);
 
-                    // final now = new DateTime.now();
-                    // String formatter =
-                    //     new DateFormat.yMMMMd('en_US').toString();
-
                     Note note = Note(
                       title: titleController.text,
                       description: descriptionController.text,

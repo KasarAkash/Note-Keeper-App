@@ -5,31 +5,36 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_keeper_app/model/Note.dart';
 
 class NoteCard extends StatelessWidget {
-  NoteCard({Key? key, required this.note}) : super(key: key);
+  NoteCard({Key? key, required this.note, required this.color})
+      : super(key: key);
 
   Note note;
+  Color color;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.cyan,
+      color: color,
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               note.title,
               style: GoogleFonts.poppins(
                 color: Colors.black,
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
             ),
+            const SizedBox(height: 10),
             Text(
               note.date,
               style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontSize: 18,
+                color: Colors.black87,
+                fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),
