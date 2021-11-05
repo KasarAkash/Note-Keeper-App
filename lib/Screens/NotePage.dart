@@ -117,6 +117,8 @@ class _NotePageState extends State<NotePage> {
                   controller: titleController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
+                  enableInteractiveSelection: true,
+                  enableSuggestions: true,
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 30,
@@ -138,6 +140,8 @@ class _NotePageState extends State<NotePage> {
                   controller: descriptionController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
+                  enableInteractiveSelection: true,
+                  enableSuggestions: true,
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 22,

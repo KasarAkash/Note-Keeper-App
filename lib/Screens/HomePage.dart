@@ -20,24 +20,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Color> noteCardColors = const [
-    Color(0xffCAB8FF),
-    Color(0xff79B4B7),
-    Color(0xffFFADAD),
-    Color(0xff79B4B7),
-    Color(0xffB980F0),
-    Color(0xffE5FBB8),
-    Color(0xffC1AC95),
-    Color(0xff867AE9),
-    Color(0xff08D9D6),
-    Color(0xffDDFFBC),
-    Color(0xffFF577F),
-    Color(0xffCD5D7D),
-    Color(0xff9AB3F5),
-    Color(0xffEFBBCF),
-    Color(0xff28DF99),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,23 +90,6 @@ class _HomePageState extends State<HomePage> {
               return const Text("Loading");
             }
 
-            // return ListView(
-            //   children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            //     Map<String, dynamic> data =
-            //         document.data()! as Map<String, dynamic>;
-
-            //     Note note = Note(
-            //       title: data['title'],
-            //       description: data['description'],
-            //       date: data['date'],
-            //     );
-
-            //     return NoteCard(note: note);
-            //   }).toList(),
-            // );
-
-            Random random = Random();
-
             List<Note> notes =
                 snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
@@ -162,8 +127,8 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: NoteCard(
                     note: notes[index],
-                    color:
-                        noteCardColors[random.nextInt(noteCardColors.length)],
+                    color: Colors
+                        .primaries[Random().nextInt(Colors.primaries.length)],
                   ),
                 );
               },
