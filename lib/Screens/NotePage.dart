@@ -20,22 +20,6 @@ class _NotePageState extends State<NotePage> {
   final descriptionController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    titleController.addListener(_printLatestValue);
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    super.dispose();
-  }
-
-  void _printLatestValue() {
-    print('Second text field: ${titleController.text}');
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

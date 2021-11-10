@@ -40,4 +40,8 @@ class FireStorage {
 
     return notesStream;
   }
+
+  static Future<QuerySnapshot> getSearchedNotes(String string) {
+    return notes.where('title', arrayContains: string).get();
+  }
 }
