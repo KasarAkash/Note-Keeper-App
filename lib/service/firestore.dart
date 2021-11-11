@@ -10,7 +10,7 @@ class FireStorage {
 
   static CollectionReference notes = FirebaseFirestore.instance
       .collection('notes')
-      .doc(getEmail())
+      .doc(Auth.getEmail())
       .collection("myNotes");
 
   static Future<void> addNote(Note note) {

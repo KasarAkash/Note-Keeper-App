@@ -28,7 +28,7 @@ class SignUpPage extends StatelessWidget {
             const SizedBox(height: 20),
             InkWell(
               onTap: () async {
-                await signInWithGoogle();
+                await Auth.signInWithGoogle();
 
                 Navigator.pushReplacement(
                   context,
