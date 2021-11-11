@@ -21,6 +21,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isSearching = false;
+  bool isQuery = false;
+  String searchQuery = '';
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,32 +42,41 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                isSearching = !isSearching;
-              });
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white10,
-                borderRadius: BorderRadius.circular(10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  isSearching = !isSearching;
+
+                  if (!isSearching) {
+                    searchController.text = '';
+                  }
+                  if (isQuery) {
+                    isQuery = false;
+                  }
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white10,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                height: 30,
+                width: 50,
+                padding: const EdgeInsets.all(8),
+                child: isSearching
+                    ? const Icon(
+                        Icons.clear,
+                        color: Colors.white,
+                        size: 30,
+                      )
+                    : const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 30,
+                      ),
               ),
-              height: 30,
-              width: 50,
-              margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-              padding: const EdgeInsets.all(8),
-              child: isSearching
-                  ? const Icon(
-                      Icons.clear,
-                      color: Colors.white,
-                      size: 30,
-                    )
-                  : const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 30,
-                    ),
             ),
           ),
         ],
@@ -100,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: TextField(
-                      // controller: searchController,
+                      controller: searchController,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       enableInteractiveSelection: true,
@@ -111,6 +123,19 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                            size: 26,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isQuery = true;
+                              searchQuery = searchController.text;
+                            });
+                          },
+                        ),
                         border: InputBorder.none,
                         hintText: "Search by title",
                         hintStyle: GoogleFonts.poppins(
@@ -125,7 +150,9 @@ class _HomePageState extends State<HomePage> {
                   )
                 : const SizedBox(),
             StreamBuilder<QuerySnapshot>(
-              stream: FireStorage.getNotes(),
+              stream: isQuery
+                  ? FireStorage.getSearchedNotes(searchQuery)
+                  : FireStorage.getNotes(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -145,6 +172,8 @@ class _HomePageState extends State<HomePage> {
                     title: data['title'],
                     description: data['description'],
                     date: data['date'],
+                    color: Colors
+                        .primaries[Random().nextInt(Colors.primaries.length)],
                   );
 
                   return note;
@@ -174,8 +203,6 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: NoteCard(
                         note: notes[index],
-                        color: Colors.primaries[
-                            Random().nextInt(Colors.primaries.length)],
                       ),
                     );
                   },

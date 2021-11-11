@@ -8,17 +8,10 @@ class FireStorage {
   static CollectionReference users =
       FirebaseFirestore.instance.collection('users');
 
-  static CollectionReference notes =
-      FirebaseFirestore.instance.collection('notes');
-
-  static Future<void> addUser() {
-    return users.add({
-      'uid': getUID(),
-      'email': getEmail(),
-    }).catchError((error) {
-      return error;
-    });
-  }
+  static CollectionReference notes = FirebaseFirestore.instance
+      .collection('notes')
+      .doc(getEmail())
+      .collection("myNotes");
 
   static Future<void> addNote(Note note) {
     return notes.add({
@@ -35,13 +28,16 @@ class FireStorage {
   }
 
   static Stream<QuerySnapshot> getNotes() {
-    final Stream<QuerySnapshot> notesStream =
-        FirebaseFirestore.instance.collection('notes').snapshots();
+    final Stream<QuerySnapshot> notesStream = notes.snapshots();
 
     return notesStream;
   }
 
-  static Future<QuerySnapshot> getSearchedNotes(String string) {
-    return notes.where('title', arrayContains: string).get();
+  static getSearchedNotes(String string) {
+    try {
+      return notes.where('title', isEqualTo: string).get().asStream();
+    } catch (e) {
+      return e;
+    }
   }
 }

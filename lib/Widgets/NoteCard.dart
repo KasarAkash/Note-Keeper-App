@@ -5,18 +5,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:note_keeper_app/model/Note.dart';
 
 class NoteCard extends StatelessWidget {
-  NoteCard({Key? key, required this.note, required this.color})
-      : super(key: key);
+  NoteCard({Key? key, required this.note}) : super(key: key);
 
   Note note;
-  Color color;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(18),
       child: Card(
-        color: color,
+        color: note.color,
         elevation: 10,
         borderOnForeground: true,
         child: Padding(

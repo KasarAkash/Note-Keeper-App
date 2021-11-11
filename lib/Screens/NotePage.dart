@@ -59,10 +59,10 @@ class _NotePageState extends State<NotePage> {
                     String formatter = DateFormat.yMMMMd('en_US').format(now);
 
                     Note note = Note(
-                      title: titleController.text,
-                      description: descriptionController.text,
-                      date: formatter,
-                    );
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        date: formatter,
+                        color: Colors.transparent);
 
                     await FireStorage.addNote(note);
                     Navigator.pop(context);
